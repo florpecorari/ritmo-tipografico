@@ -41,10 +41,10 @@ body.inv{--bg:#3a3a3a;--paper:#000;--ink:#fff}
 #hoja.desenfocado{filter:blur(3px)}
 .signo,.guion,.rotulo{position:absolute;cursor:pointer}
 .signo svg,.guion svg,.rotulo svg{display:block;fill:var(--ink);pointer-events:none}
-.signo.sel svg,.guion.sel svg,.rotulo.sel svg{fill:var(--sel)}
-.signo:hover svg,.guion:hover svg,.rotulo:hover svg{fill:var(--sel)}
 .objeto{display:block;width:100%;height:100%}
-.original,.seleccion{display:none!important}
+.original{display:none!important}
+.seleccion{position:absolute;display:none;pointer-events:none;box-sizing:border-box;border:1px solid var(--sel);z-index:10}
+.seleccion .conjunto{display:none!important}
 .selector_marco{position:fixed;border:1px solid var(--sel);background:#2b6fff22;display:none;z-index:20;pointer-events:none}
 /* reglas y guías */
 .regla{position:fixed;background:#eee;z-index:30}
@@ -75,7 +75,15 @@ body.inv .regla{background:#555}
 .botonera{display:flex;gap:10px;margin-top:16px}
 .boton{display:inline-block;padding:7px 18px;background:#ddd;border-radius:3px;cursor:pointer}
 .boton:hover{filter:brightness(.93)}.boton_rojo{background:#d9382c;color:#fff}.boton_verde{background:#2f9e5b;color:#fff}
-@media print{#menu,.regla,#texto,#caja{display:none}html,body{overflow:visible}#tablero{position:static}#hoja{box-shadow:none;transform:none!important;left:0!important;top:0!important}}
+#caja .ventana{overflow-wrap:break-word}
+.ventana ul{margin:0 0 .7em;padding-left:1.3em}.ventana li{margin:0 0 .35em}
+@media(max-width:600px){#caja .ventana{width:94vw;max-width:94vw;max-height:88vh;padding:16px 18px}}
+.seleccion.es-grupo{border-style:dashed}
+#estado_guardado{position:fixed;left:26px;bottom:6px;z-index:10;font:11px var(--ui);color:#555;opacity:.8;pointer-events:none}
+#estado_guardado.error{color:#b3261e;opacity:1}
+body.inv #estado_guardado{color:#bbb}body.inv #estado_guardado.error{color:#ff8a80}
+@page{margin:0}
+@media print{#estado_guardado,.seleccion,.guia,#menu,.regla,#texto,#caja,.selector_marco{display:none!important}html,body{height:auto;overflow:visible;background:var(--paper);-webkit-print-color-adjust:exact;print-color-adjust:exact}#tablero{position:static;overflow:visible}#hoja{position:static;box-shadow:none;transform:none!important;filter:none!important;transition:none}}
 </style>
 </head>
 <body>
@@ -169,6 +177,7 @@ body.inv .regla{background:#555}
 
 
 
+<div id="estado_guardado" role="status" aria-live="polite"></div>
 <div id="tablero">
 	<div id="hoja" data-giro="horizontal" data-guias="visibles" data-guiasbloqueo="desbloqueadas" data-zoom="100" data-modo-invertircolores="activo" data-modo-desenfocar="normal" data-hojax="467" data-hojay="44">
 		<div class="seleccion" id="sel_1" style="top: 0px; left: 0px; display: none;"><div class="conjunto" style="display: none;"></div></div>
@@ -208,37 +217,40 @@ body.inv .regla{background:#555}
 <div class="ventana_oculta">
 	<div id="ventana_trabajopractico" class="ventana ventana_informacion">
 		<h2>Trabajo práctico</h2>
+		<p><strong>Ritmo tipográfico: espacio y color</strong></p>
 
 		<h3>Objetivos</h3>
-		<p>Desarrollar el sentido del ritmo a través del reconocimiento de las relaciones espaciales óptimas entre los elementos de un texto.</p>
-		<p>Reconocer las contraformas internas como determinantes de la interletra, la interpalabra y la interlínea.</p>
-		<p>Visualizar la contraforma compartida, cuantificar su peso y optimizarla para homogeneizar el color de las palabras.</p>
-		<p>Reflexionar sobre el comportamiento de las contraformas propias y compartidas, reconociendo pares problemáticos para proyectar las relaciones espaciales del conjunto.</p>
-		<p>Estudiar la relación entre el color de los signos y el color del texto.</p>
-		<p>Visualizar las diferencias espaciales que se producen entre palabras compuestas con signos de diferente variable de color o tamaño.</p>
-		<p>Desarrollar el sentido del ritmo a través del reconocimiento de las relaciones espaciales óptimas entre los elementos de un texto.</p>
-		<p>Trabajar un bloque de texto de modo de obtener un color homogéneo y armonía en la forma de la mancha (alineación, largo de las líneas, corte de palabras y márgenes).</p>
-		<p>Analizar cómo interactúan la interletra, la interpalabra, la interlínea, el color del bloque, la alineación, los márgenes y el formato del soporte en una pieza gráfica y cómo influyen en la transmisión de la información escrita.</p>
-		<p>Trabajar la composición de elementos textuales de distinta índole (título, texto, autor, rótulo), donde cada uno cumple distinta función y tiene diferente jerarquía.</p>
+		<ul>
+			<li>Desarrollar el sentido del ritmo tipográfico a partir del reconocimiento de las relaciones espaciales entre los elementos de un texto.</li>
+			<li>Reconocer las contraformas internas de las letras como referencia para definir la interletra, la interpalabra y la interlínea.</li>
+			<li>Analizar los espacios compartidos entre letras, su peso visual y su incidencia en la construcción de un color tipográfico homogéneo.</li>
+			<li>Identificar pares de letras problemáticos y evaluar cómo las contraformas propias y compartidas influyen en el espaciado de las palabras.</li>
+			<li>Comprender la relación entre el color de los signos y el color tipográfico del texto.</li>
+			<li>Reconocer las variaciones espaciales que se producen al combinar signos de diferente tamaño o color.</li>
+			<li>Componer un bloque de texto de color tipográfico homogéneo, considerando la alineación, la longitud de las líneas, los cortes de palabras y los márgenes.</li>
+			<li>Analizar la relación entre interletra, interpalabra, interlínea, color tipográfico, alineación, márgenes y formato del soporte.</li>
+			<li>Organizar distintos elementos textuales —título, cuerpo de texto, autor, fecha y rótulo— teniendo en cuenta sus funciones y jerarquías dentro de la composición.</li>
+		</ul>
 
 		<h3>Ejercitación</h3>
-		<p>Se compondrá el texto propuesto prestando especial atención a las relaciones espaciales y al color tipográfico. Para ello se buscará primero la interletra que permita espaciar con un color parejo todos los pares presentes en el texto. Luego, en base a esa interletra se decidirá la interpalabra y la interlínea de modo tal que se establezcan líneas horizontales de palabras pertenecientes a un bloque de color homogéneo y de fácil lectura. Siendo que en la composición se combinarán dos familias tipográficas habrá que hacer este procedimiento para cada una.</p>
-		<p>El título, el párrafo de texto y el autor y fecha deberán tener color tipográfico homogéneo.</p>
-		<p>La composición (el tamaño de la caja, las relaciones espaciales, el marginado, la relación entre elementos, etcétera) deberán proyectarse y ser evaluados a medida que avanza el trabajo. Para esto podés generar PDF durante el proceso e imprimirlos. Esos PDF también pueden usarse como bocetos para optimizar la puesta en página.</p>
-		<p>El título, el bloque de texto, el autor y la fecha y el rótulo deberán formar parte de la composición, por lo que, además de cumplir sus respectivas funciones en la comunicación, deberán relacionarse en la puesta en página y quedar contenidos en esta.</p>
-		<p>El trabajo se evaluará en el impreso.</p>
+		<p>El trabajo consiste en componer el texto propuesto, prestando especial atención a las relaciones espaciales entre los signos y al color tipográfico.</p>
+		<p>En primer lugar, se ajustará la interletra buscando una distribución equilibrada de los espacios entre los pares de letras que aparecen en el texto. A partir de este criterio, se definirán la interpalabra y la interlínea, procurando construir líneas y bloques de texto con un color tipográfico homogéneo y una lectura fluida.</p>
+		<p>Si se trabaja con dos familias tipográficas, este procedimiento deberá realizarse para cada una, atendiendo a sus características particulares.</p>
+		<p>El título, el párrafo de texto, la autoría y la fecha deberán presentar un color tipográfico homogéneo.</p>
+		<p>A lo largo del proceso se revisarán las decisiones de composición: tamaño de la caja de texto, relaciones espaciales, márgenes y ubicación de los elementos. Se podrán generar archivos PDF e imprimir pruebas para observar los resultados y realizar los ajustes necesarios.</p>
+		<p>El título, el bloque de texto, la autoría, la fecha y el rótulo deberán integrarse en una misma composición. Cada elemento deberá cumplir su función y, al mismo tiempo, relacionarse con los demás dentro de la puesta en página.</p>
+		<p><strong>La evaluación se realizará sobre el trabajo impreso.</strong></p>
 
 		<h3>Consejos</h3>
-		<p>Prestar especial atención a los blancos (contraformas internas y compartidas) de cada familia tipográfica. Utilizarlas para decidir las relaciones espaciales que permitan resolver las palabras y el bloque con un color tipográfico homogéneo.</p>
-		<p>Comenzar por ubicar cuáles son los pares de letras problemáticos, es decir, los que presentan mayores complicaciones para espaciarlos (porque contienen mucho o muy poco aire) y a partir de ellos detectar cuál es el rango de color posible para las palabras. Cuando se haya logrado igualar el color de una palabra que contenga uno de estos pares con otra que no los tenga, tomarlas como parámetro para espaciar las restantes.</p>
-		<p>Definir la interpalabra y la interlínea después de haber consolidado el color de las palabras.</p>
-		<p>Leer el texto compuesto para evitar omisiones y erratas. La página incluye sólo los signos a utilizar (no faltan ni sobran), excepto los guiones.</p>
-		<p>Hacer el trabajo con tiempo y hacer evaluaciones durante el proceso.</p>
-		<p>Una vez impreso el trabajo, verificar que los márgenes sean los buscados. No dejar que la impresión encaje el archivo en el área de impresión porque eso ampliará los márgenes y achicará las letras. Imprimir desde Adobe Acrobat.</p>
-		<p>Con el impreso a distancia prudente (al menos 50 cm) entrecerrar los ojos y observar el color del bloque. Tiene que ser homogéneo. Si lo que se ve no es el resultado buscado, volver a intentarlo, imprimir y repetir la operación.</p>
-		<p>Esta es una síntesis de la pauta del trabajo práctico propuesto para los estudiantes que cursan Tipografía 1. Si ese es tu caso, leé la pauta y cumplí las condiciones de entrega allí detalladas.</p>
+		<p><strong>Observar los espacios.</strong> Prestá especial atención a las contraformas internas y compartidas de cada familia tipográfica. Estos espacios serán la referencia para definir las distancias entre letras y construir palabras y bloques de color homogéneo.</p>
+		<p><strong>Identificar los pares problemáticos.</strong> Comenzá por reconocer las combinaciones de letras que presentan mayores dificultades de espaciado, ya sea por la acumulación o por el exceso de espacio. Utilizá estos pares como referencia para ajustar las demás combinaciones y comparar el color de las palabras.</p>
+		<p><strong>Definir las relaciones espaciales en orden.</strong> Una vez resuelta la interletra, establecé la interpalabra y la interlínea. Estos ajustes permitirán organizar las palabras en líneas y las líneas en un bloque equilibrado.</p>
+		<p><strong>Revisar el texto.</strong> Verificá que no haya omisiones ni errores. Trabajá únicamente con los signos disponibles para el ejercicio, respetando el texto propuesto.</p>
+		<p><strong>Realizar pruebas durante el proceso.</strong> No esperes hasta el final para evaluar la composición. Generá PDF, imprimí versiones de prueba y observá los resultados para identificar los ajustes necesarios.</p>
+		<p><strong>Controlar la impresión.</strong> Verificá que los márgenes impresos correspondan a los previstos y que el tamaño de las letras no se haya modificado. Evitá la opción de ajustar el archivo al área de impresión, ya que puede alterar las proporciones de la composición. Se recomienda imprimir desde Adobe Acrobat.</p>
+		<p><strong>Evaluar el color del bloque.</strong> Observá el impreso a una distancia prudente, de aproximadamente 50 cm, entrecerrando ligeramente los ojos para percibir el color general del texto. Si aparecen zonas demasiado densas o demasiado abiertas, revisá el espaciado, realizá los ajustes necesarios y volvé a imprimir.</p>
+		<p>El objetivo es lograr una composición en la que las relaciones espaciales entre los signos, las palabras y las líneas contribuyan a construir un color tipográfico homogéneo y una organización visual coherente.</p>
 	</div>
-
 
 	<div id="ventana_atajos" class="ventana ventana_informacion">
 		<h2>Atajos de teclado</h2>
@@ -318,45 +330,30 @@ body.inv .regla{background:#555}
 		<h2>Créditos</h2>
 
 		<article class="info-introduccion">
-			<p><strong>Elaboración ejercicio:</strong> Cuerpo docente de la Cátedra Cosgaya.</p>
-			<p><strong>Desarrollo:</strong> Alejandro Sanchez Menendez</p>
-			<p><strong>Redacción:</strong> Marcela Romero y Alvaro Ghisolfo</p>
-			<p><strong>Beta tester:</strong> Alvaro Ghisolfo</p>
-			<p><strong>Agradecimientos:</strong> Pablo Cosgaya, Marcela Romero, Alvaro Ghisolfo y a todo el cuerpo docente de la Cátedra.</p>
-			<p><strong>Versión:</strong> 5.11.0 - (19/03/2026)</p>
+			<p><strong>Asignatura:</strong> Tipografía — Segundo año</p>
+			<p><strong>Carrera:</strong> Tecnicatura en Diseño Gráfico</p>
+			<p><strong>Institución:</strong> Escuela Normal Superior Justo José de Urquiza</p>
+			<p><strong>Docente y responsable de la adaptación:</strong> Florencia Belén Pecorari Capanni</p>
 		</article>
 
-		<article class="info-licencia">
-			<h3>Licencia de la aplicación</h3>
-			<p><a href="https://www.catedracosgaya.com.ar/espaciado/letras/LICENSE.md" target="_blank">Esta aplicación está disponible bajo la licencia MIT - Copyright (c) 2015-2026 Cátedra Cosgaya.</a></p>
-
-			<h3>Licencia del trabajo práctico</h3>
-			<p><a href="http://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank">Esta obra está bajo una licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional.</a></p>
-
-			<h3>Repositorio GitHub</h3>
-			<p><a href="https://github.com/catedracosgaya/espaciado-letras" target="_blank">https://github.com/catedracosgaya/espaciado-letras</a></p>
-		</article>
-		
-		<article class="info-contacto">
-			<h3>Contacto</h3>
-			<p>Email: <a href="mailto:contactenos@catedracosgaya.com.ar">contactenos@catedracosgaya.com.ar</a></p>
-			<p>Web: <a href="http://www.catedracosgaya.com.ar/" target="_blank">www.catedracosgaya.com.ar</a></p>
-			<p>Facebook: <a href="http://www.facebook.com/catedracosgaya" target="_blank">facebook.com/catedracosgaya</a></p>
-			<p>Twitter: <a href="http://www.twitter.com/catedracosgaya" target="_blank">twitter.com/catedracosgaya</a></p>
-			<p>Instagram: <a href="http://www.instagram.com/catedracosgaya" target="_blank">instagram.com/catedracosgaya</a></p>
-			<p>GitHub: <a href="http://www.github.com/catedracosgaya" target="_blank">github.com/catedracosgaya</a></p>
+		<article class="info-recurso">
+			<h3>Sobre este recurso</h3>
+			<p>Esta aplicación didáctica fue adaptada para la enseñanza de la Tipografía en el segundo año de la Tecnicatura en Diseño Gráfico, con el propósito de explorar la forma, el color, la composición y las relaciones espaciales de los signos tipográficos.</p>
+			<p>El desarrollo toma como referencia el trabajo <em>Espaciado de letras — Aplicación de letras</em>, de la <strong>Cátedra Cosgaya</strong>, cuyos aportes constituyen el punto de partida para esta propuesta pedagógica.</p>
+			<p>La adaptación incorpora una contextualización propia para su utilización en el marco de la asignatura Tipografía de la Escuela Normal Superior Justo José de Urquiza.</p>
 		</article>
 
-		<article class="info-recursos">
-			<h3>Recursos utilizados</h3>
-			<p>Fuentes: <a href="http://www.omnibus-type.com/fonts/rosario" target="_blank">Rosario</a>, <a href="http://www.omnibus-type.com/fonts/chivo" target="_blank">Chivo</a>, <a href="http://www.omnibus-type.com/fonts/asap-symbol" target="_blank">Asap Symbol</a>, <a href="http://fontawesome.io/" target="_blank">Font Awesome</a> y <a href="http://mfglabs.github.io/mfglabs-iconset/" target="_blank">MFG Labs icon set</a></p>
-			<p class="enlaces"><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>, <a href="http://www.jacklmoore.com/colorbox/" target="_blank">Colorbox</a>, <a href="https://github.com/dompdf/dompdf" target="_blank">dompdf</a>, <a href="http://html5boilerplate.com/" target="_blank">HTML5 Boilerplate</a>, <a href="http://codepen.io/JTParrett/pen/uzGvy" target="_blank">jQuery click and drag scroll</a>, <a href="http://jqueryui.com/" target="_blank">jQuery UI</a>, <a href="http://touchpunch.furf.com/" target="_blank">jQuery UI Touch Punch</a>, <a href="http://nightlycoding.com/" target="_blank">Nightly Coding</a>, <a href="https://github.com/eligrey/FileSaver.js" target="_blank">FileSaver.js</a>, <a href="https://github.com/blueimp/JavaScript-MD5" target="_blank">JavaScript-MD5</a>, <a href="http://stackoverflow.com/" target="_blank">Stack Overflow</a></p>
+		<article class="info-referencias">
+			<h3>Referencias y reconocimiento</h3>
+			<p><strong>Cátedra Cosgaya</strong></p>
+			<p>Reconocimiento a la Cátedra Cosgaya por el desarrollo original que inspiró este recurso y por sus aportes a la exploración y enseñanza de la tipografía.</p>
+			<p>Sitio web: <a href="https://www.catedracosgaya.com.ar/" target="_blank" rel="noopener noreferrer">www.catedracosgaya.com.ar</a></p>
 		</article>
 
-		<article class="info-legales">
-			<h3>Política de cookies y estadísticas</h3>
-			<p>Utilizamos cookies y/o Local Storage para guardar la configuración de la hoja de trabajo.</p>
-			<p>Utilizamos Google Analytics para llevar las estadísticas de visitas y para medir la utilización de las herramientas de la aplicación.</p>
+		<article class="info-proposito">
+			<h3>Propósito educativo</h3>
+			<p>Este recurso está destinado al uso pedagógico y a la experimentación tipográfica en el ámbito de la formación en Diseño Gráfico.</p>
+			<p><strong>Versión:</strong> Adaptación didáctica para Tipografía — 2026.</p>
 		</article>
 	</div>
 
@@ -482,11 +479,11 @@ var V={z:1,x:0,y:0},hist=[],hi=-1,space=false,guiasOk=true,bloq=false,inicial={}
 var items=function(){return $$('.signo,.guion,.rotulo',hoja)};
 var num=function(v){return parseFloat(v)||0};
 items().forEach(function(e){inicial[e.id||'rotulo']=[num(e.style.left),num(e.style.top)]});
-var guionMolde=$('.guion',hoja).cloneNode(true);
+var guionMolde=$('.guion',hoja).cloneNode(true);guionMolde.removeAttribute('data-grupo');
 
 /* ---- vista ---- */
 function aplicar(){hoja.style.left=V.x+'px';hoja.style.top=V.y+'px';hoja.style.transform='scale('+V.z+')';
-  hoja.dataset.zoom=Math.round(V.z*100);$('#menu_zoom_cifra span').textContent=Math.round(V.z*100)+'%'}
+  hoja.dataset.zoom=Math.round(V.z*100);marcar();$('#menu_zoom_cifra span').textContent=Math.round(V.z*100)+'%'}
 function centrar(){var W=tab.clientWidth,w=hoja.offsetWidth*V.z;V.x=Math.round((W-w)/2);V.y=44;aplicar()}
 function zoom(nz,cx,cy){nz=Math.max(.1,Math.min(8,nz));cx=cx==null?tab.clientWidth/2:cx;cy=cy==null?tab.clientHeight/2:cy;
   V.x=cx-(cx-V.x)*nz/V.z;V.y=cy-(cy-V.y)*nz/V.z;V.z=nz;aplicar()}
@@ -494,22 +491,38 @@ function aHoja(e){var r=hoja.getBoundingClientRect();return [(e.clientX-r.left)/
 
 /* ---- historial ---- */
 function foto(){var p={};items().forEach(function(e){p[e.id||'rotulo']=[num(e.style.left),num(e.style.top)]});
-  return JSON.stringify({p:p,g:$$('.guia',hoja).map(function(g){return [g.classList.contains('guia_horizontal')?'h':'v',num(g.dataset.p)]}),v:hoja.classList.contains('giro-v'),n:$$('.guion',hoja).map(function(e){return e.id})})}
-function guardar(){try{localStorage.setItem(KEY,hist[hi])}catch(e){}}
+  return JSON.stringify({p:p,g:$$('.guia',hoja).map(function(g){return [g.classList.contains('guia_horizontal')?'h':'v',num(g.dataset.p)]}),v:hoja.classList.contains('giro-v'),n:$$('.guion',hoja).map(function(e){return e.id}),gr:items().reduce(function(o,e){if(e.dataset.grupo)o[e.id||'rotulo']=e.dataset.grupo;return o},{}),i:document.body.classList.contains('inv'),gv:guiasOk,gb:bloq})}
+var indicador=$('#estado_guardado');
+function aviso(t,err){indicador.textContent=t;indicador.classList.toggle('error',!!err)}
+function pend(){aviso('Guardando…')}
+function guardar(){try{localStorage.setItem(KEY,foto());var d=new Date();aviso('Cambios guardados · '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2))}catch(e){aviso('No se pudo guardar en este navegador',true)}}
+/* ajustes de vista (colores invertidos y guías): se guardan y se recuperan, pero no forman parte del deshacer */
+function vista(d){if('i' in d)document.body.classList.toggle('inv',!!d.i);
+  if('gv' in d){guiasOk=!!d.gv;document.body.classList.toggle('sin-guias',!guiasOk);$('#menu_guias_visibilidad span').textContent=guiasOk?'Ocultar líneas guías':'Mostrar líneas guías'}
+  if('gb' in d){bloq=!!d.gb;$('#menu_guias_bloqueo span').textContent=bloq?'Desbloquear líneas guías':'Bloquear líneas guías'}}
 function push(){hist=hist.slice(0,hi+1);hist.push(foto());hi++;guardar();estado()}
 function estado(){$('#menu_rehacer').classList.toggle('desactivado',hi>=hist.length-1);$('#menu_deshacer').classList.toggle('desactivado',hi<=0)}
-function restaurar(j){var d=JSON.parse(j);
+function restaurar(j,conVista){var d=JSON.parse(j);
+  if(!d||typeof d.p!=='object'||!Array.isArray(d.g)||!Array.isArray(d.n)||d.n.some(function(i){return !/^guion_\d+$/.test(i)})||
+     d.g.some(function(g){return !(g[0]==='h'||g[0]==='v')||!isFinite(g[1])})||Object.keys(d.p).some(function(k){return !(d.p[k]&&isFinite(d.p[k][0])&&isFinite(d.p[k][1]))}))throw new Error('documento no compatible');
+  if(conVista)vista(d);
   hoja.classList.toggle('giro-v',!!d.v);hoja.dataset.giro=d.v?'vertical':'horizontal';
   $$('.guion',hoja).forEach(function(e){if(d.n.indexOf(e.id)<0)e.remove()});
   d.n.forEach(function(id){if(!document.getElementById(id))nuevoGuion(id)});
-  items().forEach(function(e){var p=d.p[e.id||'rotulo'];if(p){e.style.left=p[0]+'px';e.style.top=p[1]+'px'}});
+  items().forEach(function(e){var p=d.p[e.id||'rotulo'];if(p){e.style.left=p[0]+'px';e.style.top=p[1]+'px'}var g=(d.gr||{})[e.id||'rotulo'];if(g){e.dataset.grupo=g;contGr=Math.max(contGr,parseInt(String(g).split('_')[1])||0)}else delete e.dataset.grupo});
   $$('.guia',hoja).forEach(function(g){g.remove()});d.g.forEach(function(g){crearGuia(g[0],g[1])});}
 function deshacer(){if(hi>0){restaurar(hist[--hi]);guardar();estado()}}
 function rehacer(){if(hi<hist.length-1){restaurar(hist[++hi]);guardar();estado()}}
 
 /* ---- selección ---- */
-function sel(list,add){if(!add)items().forEach(function(e){e.classList.remove('sel')});
-  list.forEach(function(e){e.classList.toggle('sel',add&&list.length===1?!e.classList.contains('sel'):true)})}
+var contGr=0;
+/* un elemento agrupado arrastra consigo a todo su grupo (data-grupo compartido) */
+function expandir(l){var g={};l.forEach(function(e){if(e.dataset.grupo)g[e.dataset.grupo]=1});return items().filter(function(e){return l.indexOf(e)>=0||g[e.dataset.grupo]})}
+function sel(list,add){var v=add&&list.length===1?!list[0].classList.contains('sel'):true;list=expandir(list);
+  if(!add)items().forEach(function(e){e.classList.remove('sel')});
+  list.forEach(function(e){e.classList.toggle('sel',v)})}
+function agrupar(){var s=seleccion();if(s.length<2||s.every(function(e){return e.dataset.grupo&&e.dataset.grupo===s[0].dataset.grupo}))return;var id='grupo_'+(++contGr);s.forEach(function(e){e.dataset.grupo=id});push();marcar()}
+function desagrupar(){var s=seleccion().filter(function(e){return e.dataset.grupo});if(!s.length)return;s.forEach(function(e){delete e.dataset.grupo});push();marcar()}
 var seleccion=function(){return items().filter(function(e){return e.classList.contains('sel')})};
 
 /* ---- arrastre de signos y marco de selección ---- */
@@ -521,7 +534,7 @@ hoja.addEventListener('pointerdown',function(e){
   if(!it.classList.contains('sel')||e.shiftKey)sel([it],e.shiftKey);
   var ult=aHoja(e),mov=false;
   function m(ev){var p=aHoja(ev),dx=p[0]-ult[0],dy=p[1]-ult[1];ult=p;
-    seleccion().forEach(function(s){s.style.left=(num(s.style.left)+dx)+'px';s.style.top=(num(s.style.top)+dy)+'px'});mov=true}
+    seleccion().forEach(function(s){s.style.left=(num(s.style.left)+dx)+'px';s.style.top=(num(s.style.top)+dy)+'px'});mov=true;pend()}
   function u(){removeEventListener('pointermove',m);removeEventListener('pointerup',u);if(mov)push()}
   addEventListener('pointermove',m);addEventListener('pointerup',u)});
 tab.addEventListener('pointerdown',function(e){
@@ -535,7 +548,7 @@ tab.addEventListener('pointerdown',function(e){
   function m(ev){var l=Math.min(x0,ev.clientX),t=Math.min(y0,ev.clientY),w=Math.abs(ev.clientX-x0),h=Math.abs(ev.clientY-y0);
     marco.style.cssText='display:block;left:'+l+'px;top:'+t+'px;width:'+w+'px;height:'+h+'px';
     items().forEach(function(s){var r=s.getBoundingClientRect(),d=!(r.right<l||r.left>l+w||r.bottom<t||r.top>t+h);
-      if(d)s.classList.add('sel');else if(!add)s.classList.remove('sel')})}
+      if(d)s.classList.add('sel');else if(!add)s.classList.remove('sel')});expandir(seleccion()).forEach(function(s){s.classList.add('sel')})}
   function u(){removeEventListener('pointermove',m);removeEventListener('pointerup',u);marco.style.display='none'}
   addEventListener('pointermove',m);addEventListener('pointerup',u)});
 
@@ -544,7 +557,7 @@ function crearGuia(o,p){var g=document.createElement('div');g.className='guia gu
   g.dataset.p=p;g.style[o==='h'?'top':'left']=p+'px';g.appendChild(document.createElement('span'));hoja.appendChild(g);
   g.addEventListener('pointerdown',function(e){if(!bloq&&!space&&!e.button){e.stopPropagation();e.preventDefault();arrastrarGuia(g,o)}});return g}
 function arrastrarGuia(g,o){
-  function m(ev){var p=aHoja(ev)[o==='h'?1:0];g.dataset.p=Math.round(p);g.style[o==='h'?'top':'left']=Math.round(p)+'px';
+  function m(ev){pend();var p=aHoja(ev)[o==='h'?1:0];g.dataset.p=Math.round(p);g.style[o==='h'?'top':'left']=Math.round(p)+'px';
     g.classList.toggle('borrar',o==='h'?ev.clientY<=MENU+REG:ev.clientX<=REG)}
   function u(){removeEventListener('pointermove',m);removeEventListener('pointerup',u);
     if(g.classList.contains('borrar'))g.remove();push()}
@@ -553,7 +566,7 @@ function arrastrarGuia(g,o){
   if(bloq||e.button)return;e.preventDefault();var g=crearGuia(o==='horizontal'?'h':'v',0);arrastrarGuia(g,o==='horizontal'?'h':'v');})});
 
 /* ---- guiones ---- */
-var contG=1;function nuevoGuion(id){var g=guionMolde.cloneNode(true);g.id=id||('guion_'+(++contG));g.style.left='56px';g.style.top='86px';g.classList.remove('sel');hoja.appendChild(g);return g}
+var contG=1;function nuevoGuion(id){var g=guionMolde.cloneNode(true);if(id)contG=Math.max(contG,parseInt(id.split('_')[1])||0);g.id=id||('guion_'+(++contG));g.style.left='56px';g.style.top='86px';g.classList.remove('sel');hoja.appendChild(g);return g}
 $$('.guion',hoja).forEach(function(g){contG=Math.max(contG,parseInt(g.id.split('_')[1])||1)});
 
 /* ---- teclado ---- */
@@ -592,22 +605,22 @@ pulsar('menu_desenfocar',function(){abrir('ventana_desenfocar')});
 ['girar','guias_borrar','reiniciar'].forEach(function(n){pulsar(n+'_cancelar',cerrar)});
 pulsar('girar_aceptar',function(){cerrar();var v=!hoja.classList.contains('giro-v');hoja.classList.toggle('giro-v',v);hoja.dataset.giro=v?'vertical':'horizontal';hist=[];hi=-1;push();centrar()});
 pulsar('guias_borrar_aceptar',function(){cerrar();$$('.guia',hoja).forEach(function(g){g.remove()});push()});
-pulsar('reiniciar_aceptar',function(){cerrar();items().forEach(function(e){var p=inicial[e.id||'rotulo'];if(p){e.style.left=p[0]+'px';e.style.top=p[1]+'px'}e.classList.remove('sel')});hist=[];hi=-1;push()});
-pulsar('menu_invertir_colores',function(){if(document.body.classList.contains('inv'))document.body.classList.remove('inv');else abrir('ventana_invertir_colores')});
-pulsar('invertir_colores_aceptar',function(){cerrar();document.body.classList.add('inv')});
+pulsar('reiniciar_aceptar',function(){cerrar();items().forEach(function(e){var p=inicial[e.id||'rotulo'];if(p){e.style.left=p[0]+'px';e.style.top=p[1]+'px'}e.classList.remove('sel');delete e.dataset.grupo});hist=[];hi=-1;push()});
+pulsar('menu_invertir_colores',function(){if(document.body.classList.contains('inv')){document.body.classList.remove('inv');guardar()}else abrir('ventana_invertir_colores')});
+pulsar('invertir_colores_aceptar',function(){cerrar();document.body.classList.add('inv');guardar()});
 var tb;pulsar('desenfocar_aceptar',function(){cerrar();hoja.classList.add('desenfocado');clearTimeout(tb);tb=setTimeout(function(){hoja.classList.remove('desenfocado')},5000)});
 addEventListener('pointerdown',function(){if(hoja.classList.contains('desenfocado')){clearTimeout(tb);hoja.classList.remove('desenfocado')}},true);
 pulsar('archivo_abrir_cancelar',cerrar);pulsar('ventana_archivo_error_cerrar',cerrar);
-pulsar('menu_deshacer',deshacer);pulsar('menu_rehacer',rehacer);
+pulsar('menu_grupos_agrupar',agrupar);pulsar('menu_grupos_desagrupar',desagrupar);pulsar('menu_deshacer',deshacer);pulsar('menu_rehacer',rehacer);
 pulsar('menu_texto',function(){texto.style.display=texto.style.display==='none'?'block':'none'});
-pulsar('menu_guias_visibilidad',function(){guiasOk=!guiasOk;document.body.classList.toggle('sin-guias',!guiasOk);$('span',this).textContent=guiasOk?'Ocultar líneas guías':'Mostrar líneas guías'});
-pulsar('menu_guias_bloqueo',function(){bloq=!bloq;$('span',this).textContent=bloq?'Desbloquear líneas guías':'Bloquear líneas guías'});
+pulsar('menu_guias_visibilidad',function(){guiasOk=!guiasOk;document.body.classList.toggle('sin-guias',!guiasOk);$('span',this).textContent=guiasOk?'Ocultar líneas guías':'Mostrar líneas guías';guardar()});
+pulsar('menu_guias_bloqueo',function(){bloq=!bloq;$('span',this).textContent=bloq?'Desbloquear líneas guías':'Bloquear líneas guías';guardar()});
 pulsar('menu_guiones_agregar',function(){nuevoGuion();push()});
 pulsar('menu_zoom_mas',function(){zoom(V.z*1.25)});pulsar('menu_zoom_menos',function(){zoom(V.z/1.25)});
-pulsar('menu_generarpdf_submenu',function(){print()});pulsar('menu_generarpdf',function(){print()});
+pulsar('menu_generarpdf_submenu',generarPDF);pulsar('menu_generarpdf',generarPDF);
 pulsar('menu_salvar',function(){var b=new Blob([foto()],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='espaciado-letras.ccae';a.click()});
 var fi=$('#archivo');pulsar('menu_abrir',function(){fi.click()});
-fi.addEventListener('change',function(){var f=fi.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{restaurar(r.result);hist=[];hi=-1;push();centrar()}catch(x){$('#ventana_archivo_error_respuesta').textContent='El documento que intenta cargar no es compatible.';abrir('ventana_archivo_error')}fi.value=''};r.readAsText(f)});
+fi.addEventListener('change',function(){var f=fi.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{restaurar(r.result,true);hist=[];hi=-1;push();centrar()}catch(x){$('#ventana_archivo_error_respuesta').textContent='El documento que intenta cargar no es compatible.';abrir('ventana_archivo_error')}fi.value=''};r.readAsText(f)});
 
 /* ---- menú (submenús) ---- */
 $$('#menu_caja li.submenu').forEach(function(li){var t=$('.subtitulo',li);if(t)t.addEventListener('click',function(e){e.stopPropagation();var o=li.classList.contains('abierto');$$('#menu_caja .abierto').forEach(function(x){x.classList.remove('abierto')});if(!o)li.classList.add('abierto')})});
@@ -620,10 +633,68 @@ texto.addEventListener('pointerdown',function(e){if(e.target.closest('.cerrar'))
   function m(ev){texto.style.left=(texto.offsetLeft+ev.clientX-lx)+'px';texto.style.top=(texto.offsetTop+ev.clientY-ly)+'px';lx=ev.clientX;ly=ev.clientY}
   function u(){removeEventListener('pointermove',m);removeEventListener('pointerup',u)}addEventListener('pointermove',m);addEventListener('pointerup',u)});
 
+/* ---- recuadro de selección (#sel_1): rodea el/los signos seleccionados ---- */
+var selEl=$('#sel_1',hoja);
+function marcar(){var s=seleccion(),unGrupo=s.length>0&&!!s[0].dataset.grupo&&s.every(function(e){return e.dataset.grupo===s[0].dataset.grupo});
+  $('#menu_grupos_agrupar').classList.toggle('desactivado',s.length<2||unGrupo);
+  $('#menu_grupos_desagrupar').classList.toggle('desactivado',!s.some(function(e){return e.dataset.grupo}));
+  if(!s.length){selEl.style.display='none';return}
+  selEl.classList.toggle('es-grupo',unGrupo);
+  var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  s.forEach(function(e){var b=$('svg',e).getBBox(),l=num(e.style.left),t=num(e.style.top);
+    x0=Math.min(x0,l+b.x);y0=Math.min(y0,t+b.y);x1=Math.max(x1,l+b.x+b.width);y1=Math.max(y1,t+b.y+b.height)});
+  var w=1/V.z;selEl.style.cssText='display:block;left:'+(x0-w)+'px;top:'+(y0-w)+'px;width:'+(x1-x0+2*w)+'px;height:'+(y1-y0+2*w)+'px;border-width:'+w+'px';}
+new MutationObserver(function(r){if(r.some(function(m){return m.target!==selEl&&!selEl.contains(m.target)}))marcar()})
+  .observe(hoja,{attributes:true,subtree:true,attributeFilter:['class','style']});
+
+/* ---- PDF vectorial: exporta solo la hoja (sin encabezados, URL, fecha ni numeración) ---- */
+var estiloPagina=document.createElement('style');document.head.appendChild(estiloPagina);
+addEventListener('beforeprint',function(){estiloPagina.textContent='@page{size:'+hoja.offsetWidth+'px '+hoja.offsetHeight+'px;margin:0}'});
+var mul=function(a,b){return [a[0]*b[0]+a[2]*b[1],a[1]*b[0]+a[3]*b[1],a[0]*b[2]+a[2]*b[3],a[1]*b[2]+a[3]*b[3],a[0]*b[4]+a[2]*b[5]+a[4],a[1]*b[4]+a[3]*b[5]+a[5]]};
+function matriz(t){var m=[1,0,0,1,0,0],r=/(translate|scale)\(([^)]*)\)/g,k;
+  while((k=r.exec(t||''))){var v=k[2].split(/[\s,]+/).filter(Boolean).map(Number);
+    m=mul(m,k[1]==='translate'?[1,0,0,1,v[0],v[1]||0]:[v[0],0,0,v.length>1?v[1]:v[0],0,0])}return m}
+var f3=function(n){return (Math.round(n*1000)/1000).toString()};
+function trazo(d){var t=d.match(/[a-zA-Z]|-?\d*\.?\d+(?:e[-+]?\d+)?/g),i=0,o=[],c,x=0,y=0,sx=0,sy=0,qx=0,qy=0,n=function(){return +t[i++]};
+  while(i<t.length){if(/[a-zA-Z]/.test(t[i]))c=t[i++];var r=c===c.toLowerCase(),u=c.toUpperCase(),a,b,e,g,h_,j;
+    if(u==='Z'){o.push('h');x=sx;y=sy;qx=x;qy=y;continue}
+    if(u==='M'){a=n();b=n();x=r?x+a:a;y=r?y+b:b;sx=x;sy=y;o.push(f3(x)+' '+f3(y)+' m');c=r?'l':'L';qx=x;qy=y}
+    else if(u==='L'){a=n();b=n();x=r?x+a:a;y=r?y+b:b;o.push(f3(x)+' '+f3(y)+' l');qx=x;qy=y}
+    else if(u==='H'){a=n();x=r?x+a:a;o.push(f3(x)+' '+f3(y)+' l');qx=x;qy=y}
+    else if(u==='V'){a=n();y=r?y+a:a;o.push(f3(x)+' '+f3(y)+' l');qx=x;qy=y}
+    else if(u==='C'||u==='S'){if(u==='C'){a=n();b=n();if(r){a+=x;b+=y}}else{a=2*x-qx;b=2*y-qy}
+      e=n();g=n();h_=n();j=n();if(r){e+=x;g+=y;h_+=x;j+=y}
+      o.push([a,b,e,g,h_,j].map(f3).join(' ')+' c');qx=e;qy=g;x=h_;y=j}}
+  return o.join('\n')}
+function color(s){s=(s||'#000').trim().replace('#','');if(s.length===3)s=s.replace(/./g,'$&$&');return [0,2,4].map(function(k){return f3(parseInt(s.substr(k,2),16)/255)}).join(' ')}
+async function generarPDF(){
+  var W=hoja.offsetWidth,H=hoja.offsetHeight,vert=H>W,pw=vert?595.276:841.89,ph=vert?841.89:595.276,s=Math.min(pw/W,ph/H),
+      cs=getComputedStyle(document.body),ink=color(cs.getPropertyValue('--ink')),paper=color(cs.getPropertyValue('--paper')),
+      c=[paper+' rg 0 0 '+pw+' '+ph+' re f',f3(s)+' 0 0 '+f3(-s)+' '+f3((pw-W*s)/2)+' '+f3(ph-(ph-H*s)/2)+' cm',ink+' rg'];
+  items().forEach(function(it){var sv=$('svg',it);if(!sv)return;
+    $$('path',sv).forEach(function(pa){var m=[1,0,0,1,num(it.style.left),num(it.style.top)],ch=[],n=pa;
+      while(n&&n!==sv){ch.unshift(n);n=n.parentNode}ch.forEach(function(e){m=mul(m,matriz(e.getAttribute('transform')))});
+      c.push('q '+m.map(f3).join(' ')+' cm\n'+trazo(pa.getAttribute('d'))+'\nf\nQ')})});
+  var enc=new TextEncoder(),data=enc.encode(c.join('\n')),filtro='';
+  if(window.CompressionStream){try{data=new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new CompressionStream('deflate'))).arrayBuffer());filtro='/Filter /FlateDecode '}catch(x){data=enc.encode(c.join('\n'))}}
+  var tit='\uFEFFCátedra Tipografía | 2do Año | Ritmo Tipográfico',hex=[].map.call(tit,function(ch){return ('000'+ch.charCodeAt(0).toString(16)).slice(-4)}).join('').toUpperCase(),
+      parts=[],pos=0,off=[],add=function(x){var b=typeof x==='string'?enc.encode(x):x;parts.push(b);pos+=b.length},
+      obj=function(n,body){off[n]=pos;add(n+' 0 obj\n'+body+'\nendobj\n')};
+  add('%PDF-1.4\n');
+  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+pw+' '+ph+'] /Resources << >> /Contents 4 0 R >>');
+  off[4]=pos;add('4 0 obj\n<< '+filtro+'/Length '+data.length+' >>\nstream\n');add(data);add('\nendstream\nendobj\n');
+  obj(5,'<< /Title <'+hex+'> >>');
+  var xr=pos;add('xref\n0 6\n0000000000 65535 f \n');for(var k=1;k<6;k++)add(('0000000000'+off[k]).slice(-10)+' 00000 n \n');
+  add('trailer\n<< /Size 6 /Root 1 0 R /Info 5 0 R >>\nstartxref\n'+xr+'\n%%EOF');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(parts,{type:'application/pdf'}));a.download='espaciado-letras.pdf';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},4000)}
+
 /* ---- inicio ---- */
 addEventListener('resize',centrar);
-try{var g=localStorage.getItem(KEY);if(g)restaurar(g)}catch(x){}
-hist=[foto()];hi=0;estado();centrar();
+var recuperada=false;
+try{var g=localStorage.getItem(KEY);if(g){restaurar(g,true);recuperada=true}}catch(x){}
+hist=[foto()];hi=0;estado();centrar();aviso(recuperada?'Composición recuperada':'Sin cambios');
 })();
 </script>
 </body>
