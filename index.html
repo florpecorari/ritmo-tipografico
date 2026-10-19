@@ -3,10 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<title>Cátedra Cosgaya - Aplicación Letras - Sensibilización a la forma y al color tipográficos</title>
-<meta name="description" content="Trabajo práctico de sensibilización a la forma y al color tipográficos.">
+<title>Tipografía 2.º año | Ritmo tipográfico</title>
+<meta name="description" content="Tipografía, 2.º año. Trabajo práctico: Ritmo tipográfico. Aplicación de letras para explorar el espacio y el color tipográfico.">
+<meta name="application-name" content="Aplicación de letras">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+/* Fuentes locales (licencia SIL OFL 1.1; ver fonts/OFL-Chivo.txt y fonts/OFL-Rosario.txt) */
+@font-face{font-family:'Chivo';font-weight:400;font-style:normal;font-display:swap;src:url('fonts/Chivo-Regular.ttf') format('truetype')}
+@font-face{font-family:'Chivo';font-weight:400;font-style:italic;font-display:swap;src:url('fonts/Chivo-Italic.ttf') format('truetype')}
+@font-face{font-family:'Chivo';font-weight:700;font-style:normal;font-display:swap;src:url('fonts/Chivo-Bold.ttf') format('truetype')}
+@font-face{font-family:'Chivo';font-weight:700;font-style:italic;font-display:swap;src:url('fonts/Chivo-BoldItalic.ttf') format('truetype')}
+@font-face{font-family:'Rosario';font-weight:400;font-style:normal;font-display:swap;src:url('fonts/Rosario-Regular.ttf') format('truetype')}
+@font-face{font-family:'Rosario';font-weight:700;font-style:normal;font-display:swap;src:url('fonts/Rosario-Bold.ttf') format('truetype')}
 :root{--menu:44px;--reg:16px;--bg:#d4d4d4;--bar:#2b2b2b;--paper:#fff;--ink:#000;--sel:#2b6fff;--guia:#00aeef;--ui:'Chivo','Helvetica Neue',Arial,sans-serif;--serif:'Rosario',Georgia,serif}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);font:13px/1.45 var(--ui);color:#222;-webkit-user-select:none;user-select:none}
@@ -65,7 +73,7 @@ body.inv .regla{background:#555}
 #texto p{margin:0 0 .8em}
 #texto .cerrar{position:absolute;right:8px;top:2px;font:20px/1 var(--ui);cursor:pointer;color:#666}
 /* ventanas */
-.ventana_oculta,#precarga,#inicio,#formulario{display:none}
+.ventana_oculta,#precarga,#inicio{display:none}
 #caja{position:fixed;inset:0;background:#000a;z-index:100;display:none;align-items:center;justify-content:center}
 #caja.abierta{display:flex}
 #caja .ventana{display:block;background:#fff;color:#222;padding:22px 28px;max-width:640px;max-height:86vh;overflow:auto;box-shadow:0 4px 24px #0008;-webkit-user-select:text;user-select:text}
@@ -90,7 +98,7 @@ body.inv #estado_guardado{color:#bbb}body.inv #estado_guardado.error{color:#ff8a
 <div id="menu">
 	<div id="menu_icono"></div>
 	<nav>
-		<div id="menu_logo"><a href="http://www.catedracosgaya.com.ar/" target="_blank"></a></div>
+		<div id="menu_logo"></div>
 		<div id="menu_caja">
 			<ul>
 				<li id="menu_informacion" class="submenu">
@@ -206,10 +214,6 @@ body.inv #estado_guardado{color:#bbb}body.inv #estado_guardado.error{color:#ff8a
 	<div class="cerrar">×</div>
 </div>
 
-
-<form action="https://www.catedracosgaya.com.ar/espaciado/letras/pdf.php" method="post" id="formulario">
-	<input id="informacion" name="informacion" type="hidden" value="">
-</form>
 
 
 
@@ -330,7 +334,9 @@ body.inv #estado_guardado{color:#bbb}body.inv #estado_guardado.error{color:#ff8a
 		<h2>Créditos</h2>
 
 		<article class="info-introduccion">
-			<p><strong>Asignatura:</strong> Tipografía — Segundo año</p>
+			<p><strong>Asignatura:</strong> Tipografía — 2.º año</p>
+			<p><strong>Trabajo práctico:</strong> Ritmo tipográfico</p>
+			<p><strong>Aplicación:</strong> Aplicación de letras</p>
 			<p><strong>Carrera:</strong> Tecnicatura en Diseño Gráfico</p>
 			<p><strong>Institución:</strong> Escuela Normal Superior Justo José de Urquiza</p>
 			<p><strong>Docente y responsable de la adaptación:</strong> Florencia Belén Pecorari Capanni</p>
@@ -618,7 +624,7 @@ pulsar('menu_guias_bloqueo',function(){bloq=!bloq;$('span',this).textContent=blo
 pulsar('menu_guiones_agregar',function(){nuevoGuion();push()});
 pulsar('menu_zoom_mas',function(){zoom(V.z*1.25)});pulsar('menu_zoom_menos',function(){zoom(V.z/1.25)});
 pulsar('menu_generarpdf_submenu',generarPDF);pulsar('menu_generarpdf',generarPDF);
-pulsar('menu_salvar',function(){var b=new Blob([foto()],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='espaciado-letras.ccae';a.click()});
+pulsar('menu_salvar',function(){var b=new Blob([foto()],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ritmo-tipografico.ccae';a.click()});
 var fi=$('#archivo');pulsar('menu_abrir',function(){fi.click()});
 fi.addEventListener('change',function(){var f=fi.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{restaurar(r.result,true);hist=[];hi=-1;push();centrar()}catch(x){$('#ventana_archivo_error_respuesta').textContent='El documento que intenta cargar no es compatible.';abrir('ventana_archivo_error')}fi.value=''};r.readAsText(f)});
 
@@ -677,17 +683,17 @@ async function generarPDF(){
       c.push('q '+m.map(f3).join(' ')+' cm\n'+trazo(pa.getAttribute('d'))+'\nf\nQ')})});
   var enc=new TextEncoder(),data=enc.encode(c.join('\n')),filtro='';
   if(window.CompressionStream){try{data=new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new CompressionStream('deflate'))).arrayBuffer());filtro='/Filter /FlateDecode '}catch(x){data=enc.encode(c.join('\n'))}}
-  var tit='\uFEFFCátedra Tipografía | 2do Año | Ritmo Tipográfico',hex=[].map.call(tit,function(ch){return ('000'+ch.charCodeAt(0).toString(16)).slice(-4)}).join('').toUpperCase(),
+  var hx=function(t){return '<'+[].map.call('\uFEFF'+t,function(ch){return ('000'+ch.charCodeAt(0).toString(16)).slice(-4)}).join('').toUpperCase()+'>'},
       parts=[],pos=0,off=[],add=function(x){var b=typeof x==='string'?enc.encode(x):x;parts.push(b);pos+=b.length},
       obj=function(n,body){off[n]=pos;add(n+' 0 obj\n'+body+'\nendobj\n')};
   add('%PDF-1.4\n');
   obj(1,'<< /Type /Catalog /Pages 2 0 R >>');obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
   obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+pw+' '+ph+'] /Resources << >> /Contents 4 0 R >>');
   off[4]=pos;add('4 0 obj\n<< '+filtro+'/Length '+data.length+' >>\nstream\n');add(data);add('\nendstream\nendobj\n');
-  obj(5,'<< /Title <'+hex+'> >>');
+  obj(5,'<< /Title '+hx('Tipografía 2.º año — Ritmo tipográfico')+' /Subject '+hx('Tipografía, 2.º año. Trabajo práctico: Ritmo tipográfico')+' /Creator '+hx('Aplicación de letras')+' >>');
   var xr=pos;add('xref\n0 6\n0000000000 65535 f \n');for(var k=1;k<6;k++)add(('0000000000'+off[k]).slice(-10)+' 00000 n \n');
   add('trailer\n<< /Size 6 /Root 1 0 R /Info 5 0 R >>\nstartxref\n'+xr+'\n%%EOF');
-  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(parts,{type:'application/pdf'}));a.download='espaciado-letras.pdf';
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(parts,{type:'application/pdf'}));a.download='ritmo-tipografico.pdf';
   document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},4000)}
 
 /* ---- inicio ---- */
